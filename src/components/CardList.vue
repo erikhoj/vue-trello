@@ -14,9 +14,11 @@ export default {
     display: inline-block;
     margin-left: 4px;
     margin-right: 4px;
-    background-color: blue;
+    background-color: #d0d2d6;
     height: 100px;
     width: 277px;
+    border-radius: 5px;
+    max-height: 100%;
   }
 </style>
 
