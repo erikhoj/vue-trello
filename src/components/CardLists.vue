@@ -1,6 +1,6 @@
 <template>
   <div id="card-lists">
-    <card-list v-for="list in lists" v-bind:key="list.id" v-bind:cards="list.cards" />
+    <card-list v-for="list in lists" v-bind:key="list.id" v-bind:list="list" />
   </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
 <style scoped>
   #card-lists {
     white-space: nowrap;
+    flex-grow: 1;
   }
 </style>
 

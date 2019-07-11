@@ -18,7 +18,8 @@ export default {
 
 <style scoped>
   .card-list-card {
-    padding: 4px;
+    margin-bottom: 8px;
+    padding: 8px;
     background-color: white;
     border-radius: 3px;
 

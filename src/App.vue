@@ -22,9 +22,15 @@ body {
 }
 
 #app {
+  box-sizing: border-box;
+
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: 60px;
+  padding-top: 60px;
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 </style>
