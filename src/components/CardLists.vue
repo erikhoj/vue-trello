@@ -22,7 +22,10 @@ export default {
 
 <style scoped>
   #card-lists {
-    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: nowrap;
     flex-grow: 1;
   }
 </style>

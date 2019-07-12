@@ -4,16 +4,20 @@
 
     <div class="card-list-scrollable">
       <card-list-card v-for="card in list.cards" v-bind:key="card.key" v-bind:card="card" />
+      <new-card-input v-if="isAddingCard" />
     </div>
 
-    <a class="card-list-add">
+    <a v-if="!isAddingCard" class="card-list-add" v-on:click="startAddingCard()">
       + Add another card
     </a>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import CardListCard from './CardListCard';
+import NewCardInput from './NewCardInput';
+import { START_ADDING_CARD, CANCEL_ADDING_CARD } from '../store/mutation-types';
 
 export default {
   name: 'card-list',
@@ -24,15 +28,28 @@ export default {
       id: Number,
     },
   },
+  computed: {
+    ...mapState({
+      listIdThatIsAddingCard: state => state.card.listIdThatIsAddingCard,
+    }),
+    isAddingCard: function () {
+      return this.listIdThatIsAddingCard === this.list.id;
+    }
+  },
+  methods: {
+    startAddingCard () {
+      this.$store.commit(START_ADDING_CARD, this.list.id);
+    },
+  },
   components: {
     CardListCard,
+    NewCardInput,
   },
 }
 </script>
 
 <style scoped>
   .card-list {
-    display: inline-block;
     margin-left: 4px;
     margin-right: 4px;
     background-color: #d0d2d6;
