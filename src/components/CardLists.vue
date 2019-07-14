@@ -19,7 +19,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
   #card-lists {
     display: flex;
@@ -29,4 +28,3 @@ export default {
     flex-grow: 1;
   }
 </style>
-
