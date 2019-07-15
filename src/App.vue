@@ -32,7 +32,12 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
 
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+textarea {
+  font-family: Roboto,Noto Sans,-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size: 100%;
+  letter-spacing: .01em;
+  line-height: 20px;
 }
 </style>

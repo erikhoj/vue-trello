@@ -24,6 +24,10 @@ export default {
     border-radius: 3px;
 
     box-shadow: 0 1px 0 rgba(9,30,66,.25);
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: hidden;
   }
 </style>
 

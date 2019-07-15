@@ -4,16 +4,18 @@
       <div class="name-parent">
         <span class="size-placeholder">{{ newCardName }}</span>
         <textarea
+          ref="nameInput"
           class="new-card-input-name"
           :value="newCardName"
           @input="updateNewCardName"
           spellcheck="false"
+          placeholder="Enter a title for this card..."
         />
       </div>
     </div>
 
     <div class="new-card-action-parent">
-      <button v-on:click="cancelAddingCard" class="new-card-add-button">Add Card</button>
+      <button v-on:click="confirmAddingCard" class="new-card-add-button">Add Card</button>
       <div v-on:click="cancelAddingCard">
         <md-icon v-on:click.capture="cancelAddingCard" class="new-card-cancel-button">clear</md-icon>
       </div>
@@ -29,7 +31,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { SET_NEW_CARD_NAME, CANCEL_ADDING_CARD } from '../store/mutation-types';
+import { SET_NEW_CARD_NAME, CANCEL_ADDING_CARD, CONFIRM_ADDING_CARD } from '../store/mutation-types';
 
 export default {
   name: 'new-card-input',
@@ -45,6 +47,17 @@ export default {
     cancelAddingCard () {
       this.$store.commit(CANCEL_ADDING_CARD);
     },
+    confirmAddingCard() {
+      if (this.newCardName) {
+        this.$store.commit(CONFIRM_ADDING_CARD);
+      }
+      else {
+        this.$refs.nameInput.focus();
+      }
+    },
+  },
+  mounted() {
+    this.$refs.nameInput.focus();
   },
 }
 </script>
