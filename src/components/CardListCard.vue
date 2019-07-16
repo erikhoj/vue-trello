@@ -1,10 +1,12 @@
 <template>
-  <div class="card-list-card">
+  <div draggable="true" ref="card" class="card-list-card">
     <span>{{ card.text }}</span>
   </div>
 </template>
 
 <script>
+import { LIFT_CARD } from '../store/mutation-types';
+
 export default {
   name: 'card-list-card',
   props: {
@@ -12,6 +14,20 @@ export default {
       text: String,
       id: Number,
     },
+  },
+  mounted() {
+    this.$refs.card.addEventListener('dragstart', (event) => {
+      const liftInfo = {
+        width: this.$refs.card.offsetWidth,
+        height: this.$refs.card.offsetHeight,
+        grabX: event.layerX,
+        grabY: event.layerY,
+        card: this.card,
+      };
+
+      this.$store.commit(LIFT_CARD, liftInfo);
+      console.log(liftInfo);
+    });
   },
 }
 </script>
@@ -28,6 +44,8 @@ export default {
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-x: hidden;
+
+    cursor: pointer;
   }
 </style>
 

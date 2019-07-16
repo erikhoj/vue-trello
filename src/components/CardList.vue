@@ -1,9 +1,14 @@
 <template>
-  <div class="card-list">
+  <div ref="container" class="card-list">
     <span class="card-list-name">{{list.name}}</span>
 
     <div class="card-list-scrollable">
-      <card-list-card v-for="card in list.cards" v-bind:key="card.key" v-bind:card="card" />
+      <template v-for="(card, index) in list.cards">
+        <card-placeholder v-if="index === placeholderIndex" v-bind:key='index' />
+        <card-list-card v-bind:key="card.key" v-bind:card="card" />
+      </template>
+
+      <card-placeholder v-if="placeholderIndex === list.cards.length" />
       <new-card-input v-if="isAddingCard" />
     </div>
 
@@ -19,6 +24,7 @@ import { mapState } from 'vuex';
 import CardListCard from './CardListCard';
 import NewCardInput from './NewCardInput';
 import { START_ADDING_CARD } from '../store/mutation-types';
+import CardPlaceholder from './CardPlaceholder';
 
 export default {
   name: 'card-list',
@@ -28,14 +34,17 @@ export default {
       cards: Array,
       id: Number,
     },
+    placeholderIndex: Number,
   },
   computed: {
     ...mapState({
       listIdThatIsAddingCard: state => state.card.listIdThatIsAddingCard,
+      liftedCardInfo: state => state.card.liftedCardInfo,
+      mousePosition: state => state.card.mousePosition,
     }),
     isAddingCard: function () {
       return this.listIdThatIsAddingCard === this.list.id;
-    }
+    },
   },
   methods: {
     startAddingCard () {
@@ -45,6 +54,7 @@ export default {
   components: {
     CardListCard,
     NewCardInput,
+    CardPlaceholder,
   },
 }
 </script>

@@ -1,16 +1,22 @@
 <template>
   <div id="app">
     <card-lists />
+    <dragged-card />
+    <mouse-position-updater />
   </div>
 </template>
 
 <script>
-import CardLists from './components/CardLists.vue'
+import CardLists from './components/CardLists'
+import DraggedCard from './components/DraggedCard';
+import MousePositionUpdater from './components/MousePositionUpdater';
 
 export default {
   name: 'app',
   components: {
     CardLists,
+    DraggedCard,
+    MousePositionUpdater,
   }
 }
 </script>

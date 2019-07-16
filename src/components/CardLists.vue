@@ -1,6 +1,9 @@
 <template>
   <div id="card-lists">
-    <card-list v-for="list in lists" v-bind:key="list.id" v-bind:list="list" />
+    <card-list
+      v-for="(list, index) in lists"
+      v-bind:key="list.id" :list="list"
+      :placeholderIndex="listWithPlaceholder === index ? placeholderIndex : null" />
   </div>
 </template>
 
@@ -15,6 +18,8 @@ export default {
   },
   computed: mapState({
     lists: state => state.card.lists,
+    listWithPlaceholder: state => state.card.listWithCardPlaceholder,
+    placeholderIndex: state => state.card.cardPlaceholderIndex,
   }),
 }
 </script>
