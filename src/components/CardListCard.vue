@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { LIFT_CARD } from '../store/mutation-types';
+import { LIFT_CARD } from '../store/action-types';
 
 export default {
   name: 'card-list-card',
@@ -17,16 +17,17 @@ export default {
   },
   mounted() {
     this.$refs.card.addEventListener('dragstart', (event) => {
+      const boundingRect = this.$refs.card.getBoundingClientRect();
+
       const liftInfo = {
         width: this.$refs.card.offsetWidth,
         height: this.$refs.card.offsetHeight,
-        grabX: event.layerX,
-        grabY: event.layerY,
+        grabX: event.clientX - boundingRect.left,
+        grabY: event.clientY - boundingRect.top,
         card: this.card,
       };
 
-      this.$store.commit(LIFT_CARD, liftInfo);
-      console.log(liftInfo);
+      this.$store.dispatch(LIFT_CARD, liftInfo);
     });
   },
 }
