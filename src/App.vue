@@ -2,6 +2,7 @@
   <div id="app">
     <card-lists />
     <dragged-card />
+    <dragged-list />
     <mouse-position-updater />
   </div>
 </template>
@@ -10,6 +11,7 @@
 import CardLists from './components/CardLists'
 import DraggedCard from './components/DraggedCard';
 import MousePositionUpdater from './components/MousePositionUpdater';
+import DraggedList from './components/DraggedList';
 
 export default {
   name: 'app',
@@ -17,6 +19,7 @@ export default {
     CardLists,
     DraggedCard,
     MousePositionUpdater,
+    DraggedList,
   }
 }
 </script>

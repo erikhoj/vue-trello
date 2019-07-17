@@ -4,7 +4,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { LIFT_CARD } from '../store/mutation-types';
 
 export default {
   name: 'card-placeholder',

@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { START_ADDING_CARD, SET_NEW_CARD_NAME, CANCEL_ADDING_CARD, CONFIRM_ADDING_CARD, UPDATE_LIFTED_CARD_INFO, UPDATE_MOUSE_POSITION, UPDATE_CARD_PLACEHOLDER_POSITION, RELEASE_CARD } from './mutation-types';
-import { LIFT_CARD, MOUSE_MOVED } from './action-types';
+import { START_ADDING_CARD, SET_NEW_CARD_NAME, CANCEL_ADDING_CARD, CONFIRM_ADDING_CARD, UPDATE_LIFTED_CARD_INFO, UPDATE_MOUSE_POSITION, UPDATE_CARD_PLACEHOLDER_POSITION, RELEASE_CARD, UPDATE_LIFTED_LIST_INFO, UPDATE_LIST_PLACEHOLDER_POSITION, RELEASE_LIST } from './mutation-types';
+import { LIFT_CARD, MOUSE_MOVED, LIFT_LIST } from './action-types';
 
 let nextListId = 0;
 let nextCardId = 0;
@@ -12,6 +12,8 @@ const state = {
   mousePosition: undefined,
   listWithCardPlaceholder: undefined,
   cardPlaceholderIndex: undefined,
+  liftedListInfo: undefined,
+  listPlaceholderIndex: undefined,
   lists: [
     {
       name: 'list 1',
@@ -91,15 +93,50 @@ const mutations = {
     state.cardPlaceholderIndex = undefined;
     state.liftedCardInfo = undefined;
   },
+
+  [UPDATE_LIFTED_LIST_INFO] (state, liftInfo) {
+    state.liftedListInfo = liftInfo;
+
+    state.lists = state.lists.filter(l => l.id !== liftInfo.list.id);
+  },
+
+  [UPDATE_LIST_PLACEHOLDER_POSITION] (state, listIndex) {
+    state.listPlaceholderIndex = listIndex;
+  },
+
+  [RELEASE_LIST] (state) {
+    state.lists.splice(state.listPlaceholderIndex, 0, state.liftedListInfo.list);
+    state.listPlaceholderIndex = undefined;
+    state.liftedListInfo = undefined;
+  },
 };
 
-const calculateNewCardPlaceholderPosition = ({ commit, state }, mousePosition = undefined) => {
-  mousePosition = mousePosition ? mousePosition : state.mousePosition;
+const calculateNewListPlaceholderPosition = ({ commit }, mousePosition) => {
+  let allLists = $('.card-list:not(:parent.dragged-list)');
+  const draggedList = $('#dragged-list .card-list');
+  allLists = allLists.not(draggedList);
 
+  let listIndex = allLists.length;
+  let i = 0;
+  for (let list of allLists) {
+    const boundingRect = list.getBoundingClientRect();
+
+    if (mousePosition.x < boundingRect.right) {
+      listIndex = i;
+      break;
+    }
+
+    i++;
+  }
+
+  commit(UPDATE_LIST_PLACEHOLDER_POSITION, listIndex);
+};
+
+const calculateNewCardPlaceholderPosition = ({ commit }, mousePosition) => {
   // Hack, we calculate which list contains the placeholder right now
   const allLists = $(".card-list");
 
-  let listIndex;
+  let listIndex = allLists.length -1;
   let i = 0;
   for (let list of allLists) {
     const boundingRect = list.getBoundingClientRect();
@@ -110,10 +147,6 @@ const calculateNewCardPlaceholderPosition = ({ commit, state }, mousePosition = 
     }
 
     i++;
-  }
-
-  if (listIndex === undefined) {
-    listIndex = allLists.length -1;
   }
 
   const cards = $(allLists[listIndex]).find('.card-list-card');
@@ -143,9 +176,19 @@ const actions = {
     commit(UPDATE_MOUSE_POSITION, event);
 
     if (state.liftedCardInfo) {
-      calculateNewCardPlaceholderPosition({ commit, state }, { x: event.clientX, y: event.clientY });
+      calculateNewCardPlaceholderPosition({ commit }, { x: event.clientX, y: event.clientY });
+    }
+    else if (state.liftedListInfo) {
+      calculateNewListPlaceholderPosition({ commit }, { x: event.clientX, y: event.clientY });
     }
   },
+
+  [LIFT_LIST] ({ commit, state }, liftInfo) {
+    const listIndex = state.lists.indexOf(getList(state, liftInfo.list.id));
+
+    commit(UPDATE_LIFTED_LIST_INFO, liftInfo);
+    commit(UPDATE_LIST_PLACEHOLDER_POSITION, listIndex);
+  }
 };
 
 export default {

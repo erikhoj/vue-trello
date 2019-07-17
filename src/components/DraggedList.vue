@@ -1,17 +1,21 @@
 <template>
-  <div v-if="liftInfo" ref="card" id="dragged-card" v-bind:style="style">
-    <span>{{ liftInfo.card.text }}</span>
+  <div v-if="liftInfo" ref="card" id="dragged-list" v-bind:style="style">
+    <card-list v-bind:list="liftInfo.list" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import CardList from './CardList';
 
 export default {
-  name: 'dragged-card',
+  name: 'dragged-list',
+  components: {
+    CardList,
+  },
   computed: {
     ...mapState({
-      liftInfo: state => state.card.liftedCardInfo,
+      liftInfo: state => state.card.liftedListInfo,
       mousePosition: state => state.card.mousePosition,
     }),
     style: function() {
@@ -27,23 +31,9 @@ export default {
 </script>
 
 <style scoped>
-  #dragged-card {
+  #dragged-list {
     position: absolute;
-
-    margin-bottom: 8px;
-    padding: 8px;
-    background-color: white;
-    border-radius: 3px;
-
-    box-shadow: 0 1px 0 rgba(9,30,66,.25);
-
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-x: hidden;
-
-    cursor: grabbing;
 
     transform: rotate(5deg);
   }
 </style>
-

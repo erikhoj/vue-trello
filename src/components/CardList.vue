@@ -1,12 +1,12 @@
 <template>
   <div class="card-list-parent">
     <div ref="container" class="card-list">
-      <span class="card-list-name">{{list.name}}</span>
+      <span ref="handle" class="card-list-name" draggable="true">{{list.name}}</span>
 
       <div ref="scrollable" class="card-list-scrollable">
         <template v-for="(card, index) in list.cards">
           <card-placeholder v-if="index === placeholderIndex" v-bind:key='index' />
-          <card-list-card v-bind:key="card.key" v-bind:card="card" />
+          <card-list-card v-bind:key="card.id" v-bind:card="card" />
         </template>
 
         <card-placeholder v-if="placeholderIndex === list.cards.length" />
@@ -28,6 +28,7 @@ import CardListCard from './CardListCard';
 import NewCardInput from './NewCardInput';
 import { START_ADDING_CARD } from '../store/mutation-types';
 import CardPlaceholder from './CardPlaceholder';
+import { LIFT_LIST } from '../store/action-types';
 
 export default {
   name: 'card-list',
@@ -39,10 +40,16 @@ export default {
     },
     placeholderIndex: Number,
   },
+  components: {
+    CardListCard,
+    NewCardInput,
+    CardPlaceholder,
+  },
   computed: {
     ...mapState({
       listIdThatIsAddingCard: state => state.card.listIdThatIsAddingCard,
       liftedCardInfo: state => state.card.liftedCardInfo,
+      liftedListInfo: state => state.card.liftedListInfo,
       mousePosition: state => state.card.mousePosition,
     }),
     isAddingCard: function () {
@@ -59,10 +66,24 @@ export default {
       });
     },
   },
-  components: {
-    CardListCard,
-    NewCardInput,
-    CardPlaceholder,
+  mounted() {
+    this.$refs.handle.addEventListener('dragstart', (event) => {
+      if (this.liftedListInfo) {
+        return;
+      }
+
+      const boundingRect = this.$refs.container.getBoundingClientRect();
+
+      const liftInfo = {
+        width: this.$refs.container.offsetWidth,
+        height: this.$refs.container.offsetHeight,
+        grabX: event.clientX - boundingRect.left,
+        grabY: event.clientY - boundingRect.top,
+        list: this.list,
+      };
+
+      this.$store.dispatch(LIFT_LIST, liftInfo);
+    });
   },
 }
 </script>
@@ -93,6 +114,8 @@ export default {
     font-size: 115%;
     margin-left: 16px;
     color: #172b4d;
+
+    cursor: pointer;
   }
 
   .card-list-scrollable {
