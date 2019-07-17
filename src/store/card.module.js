@@ -111,32 +111,37 @@ const mutations = {
   },
 };
 
-const calculateNewListPlaceholderPosition = ({ commit }, mousePosition) => {
+const calculateNewListPlaceholderPosition = ({ commit, state }, mousePosition) => {
   let allLists = $('.card-list:not(:parent.dragged-list)');
   const draggedList = $('#dragged-list .card-list');
   allLists = allLists.not(draggedList);
 
-  let listIndex = allLists.length;
+  let listIndex = undefined;
   let i = 0;
   for (let list of allLists) {
     const boundingRect = list.getBoundingClientRect();
 
-    if (mousePosition.x < boundingRect.right) {
-      listIndex = i;
-      break;
+    if (boundingRect.left < mousePosition.x && mousePosition.x < boundingRect.right) {
+      if (state.listPlaceholderIndex > i) {
+        listIndex = i;
+      } else {
+        listIndex = i + 1;
+      }
     }
 
     i++;
   }
 
-  commit(UPDATE_LIST_PLACEHOLDER_POSITION, listIndex);
+  if (listIndex !== undefined) {
+    commit(UPDATE_LIST_PLACEHOLDER_POSITION, listIndex);
+  }
 };
 
 const calculateNewCardPlaceholderPosition = ({ commit }, mousePosition) => {
   // Hack, we calculate which list contains the placeholder right now
   const allLists = $(".card-list");
 
-  let listIndex = allLists.length -1;
+  let listIndex = allLists.length - 1;
   let i = 0;
   for (let list of allLists) {
     const boundingRect = list.getBoundingClientRect();
@@ -179,7 +184,7 @@ const actions = {
       calculateNewCardPlaceholderPosition({ commit }, { x: event.clientX, y: event.clientY });
     }
     else if (state.liftedListInfo) {
-      calculateNewListPlaceholderPosition({ commit }, { x: event.clientX, y: event.clientY });
+      calculateNewListPlaceholderPosition({ commit, state }, { x: event.clientX, y: event.clientY });
     }
   },
 

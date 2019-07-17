@@ -1,7 +1,7 @@
 <template>
   <div id="card-lists">
     <template v-for="(list, index) in lists">
-      <list-placeholder v-if="index === listPlaceholderIndex" v-bind:key='index' />
+      <list-placeholder v-if="index === listPlaceholderIndex" v-bind:key='`${list.id}placeholder`' />
       <card-list
         v-bind:key="list.id"
         :list="list"
