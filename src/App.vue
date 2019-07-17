@@ -38,6 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  max-height: 100vh;
 }
 
 textarea {

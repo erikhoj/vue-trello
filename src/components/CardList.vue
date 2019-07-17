@@ -1,25 +1,28 @@
 <template>
-  <div ref="container" class="card-list">
-    <span class="card-list-name">{{list.name}}</span>
+  <div class="card-list-parent">
+    <div ref="container" class="card-list">
+      <span class="card-list-name">{{list.name}}</span>
 
-    <div class="card-list-scrollable">
-      <template v-for="(card, index) in list.cards">
-        <card-placeholder v-if="index === placeholderIndex" v-bind:key='index' />
-        <card-list-card v-bind:key="card.key" v-bind:card="card" />
-      </template>
+      <div ref="scrollable" class="card-list-scrollable">
+        <template v-for="(card, index) in list.cards">
+          <card-placeholder v-if="index === placeholderIndex" v-bind:key='index' />
+          <card-list-card v-bind:key="card.key" v-bind:card="card" />
+        </template>
 
-      <card-placeholder v-if="placeholderIndex === list.cards.length" />
-      <new-card-input v-if="isAddingCard" />
+        <card-placeholder v-if="placeholderIndex === list.cards.length" />
+        <new-card-input v-if="isAddingCard" />
+      </div>
+
+      <a v-if="!isAddingCard" class="card-list-add" v-on:click="startAddingCard()">
+        <md-icon class="card-list-add-icon">add</md-icon>
+        <span class="card-list-add-text">Add a card</span>
+      </a>
     </div>
-
-    <a v-if="!isAddingCard" class="card-list-add" v-on:click="startAddingCard()">
-      <md-icon class="card-list-add-icon">add</md-icon>
-      <span class="card-list-add-text">Add a card</span>
-    </a>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 import CardListCard from './CardListCard';
 import NewCardInput from './NewCardInput';
@@ -49,6 +52,11 @@ export default {
   methods: {
     startAddingCard () {
       this.$store.commit(START_ADDING_CARD, this.list.id);
+
+      const scrollable = this.$refs.scrollable;
+      Vue.nextTick(function() {
+        scrollable.scrollTop = scrollable.scrollHeight;
+      });
     },
   },
   components: {
@@ -60,6 +68,12 @@ export default {
 </script>
 
 <style scoped>
+  .card-list-parent {
+    height: 100%;
+    max-height: 100%;
+    padding-bottom: 8px;
+  }
+
   .card-list {
     margin-left: 4px;
     margin-right: 4px;
@@ -69,6 +83,9 @@ export default {
     max-height: 100%;
 
     padding-top: 8px;
+
+    display: flex;
+    flex-direction: column;
   }
 
   .card-list-name {
@@ -79,13 +96,14 @@ export default {
   }
 
   .card-list-scrollable {
+    flex: 1 1 auto;
     padding: 8px;
     padding-bottom: 0px;
 
     display: flex;
     flex-direction: column;
-    align-items: stretch;
 
+    overflow-x: hidden;
     overflow-y: auto;
   }
 

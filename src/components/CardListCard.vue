@@ -35,6 +35,7 @@ export default {
 
 <style scoped>
   .card-list-card {
+    flex-shrink: 0;
     margin-bottom: 8px;
     padding: 8px;
     background-color: white;

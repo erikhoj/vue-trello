@@ -64,7 +64,7 @@ export default {
 
 <style scoped>
   #new-card-input {
-    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
 
   .card-styling {
