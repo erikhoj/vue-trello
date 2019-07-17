@@ -9,3 +9,6 @@ export const UPDATE_LIFTED_CARD_INFO = 'updateLiftedCardInfo';
 export const RELEASE_LIST = 'releaseList';
 export const UPDATE_LIFTED_LIST_INFO = 'updateLiftedListInfo';
 export const UPDATE_LIST_PLACEHOLDER_POSITION = 'updateListPlaceholderPosition';
+export const START_ADDING_LIST = 'startAddingList';
+export const SET_NEW_LIST_NAME = 'setNewListName';
+export const CANCEL_ADDING_LIST = 'cancelAddingList';

@@ -1,7 +1,9 @@
 <template>
   <div class="card-list-parent">
     <div ref="container" class="card-list">
-      <span ref="handle" class="card-list-name" draggable="true">{{list.name}}</span>
+      <div ref="handle" draggable="true" class="card-list-handle">
+        <span class="card-list-name">{{list.name}}</span>
+      </div>
 
       <div ref="scrollable" class="card-list-scrollable">
         <template v-for="(card, index) in list.cards">
@@ -13,7 +15,7 @@
         <new-card-input v-if="isAddingCard" />
       </div>
 
-      <a v-if="!isAddingCard" class="card-list-add" v-on:click="startAddingCard()">
+      <a v-if="!isAddingCard" class="card-list-add" v-on:click="startAddingCard">
         <md-icon class="card-list-add-icon">add</md-icon>
         <span class="card-list-add-text">Add a card</span>
       </a>
@@ -103,25 +105,27 @@ export default {
     border-radius: 3px;
     max-height: 100%;
 
-    padding-top: 8px;
-
     display: flex;
     flex-direction: column;
   }
 
+  .card-list-handle {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+  }
+
   .card-list-name {
-    font-weight: 400;
-    font-size: 115%;
+    font-weight: 600;
+    font-size: 100%;
     margin-left: 16px;
     color: #172b4d;
-
-    cursor: pointer;
   }
 
   .card-list-scrollable {
     flex: 1 1 auto;
-    padding: 8px;
-    padding-bottom: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
 
     display: flex;
     flex-direction: column;

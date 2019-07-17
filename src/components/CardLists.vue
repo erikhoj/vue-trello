@@ -10,12 +10,14 @@
     </template>
 
     <list-placeholder v-if="listPlaceholderIndex === lists.length" />
+    <new-list-input />
   </div>
 </template>
 
 <script>
 import CardList from './CardList.vue';
 import ListPlaceholder from './ListPlaceholder';
+import NewListInput from './NewListInput';
 import { mapState } from 'vuex';
 
 export default {
@@ -23,6 +25,7 @@ export default {
   components: {
     CardList,
     ListPlaceholder,
+    NewListInput,
   },
   computed: mapState({
     lists: state => state.card.lists,

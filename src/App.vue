@@ -44,7 +44,7 @@ body {
   max-height: 100vh;
 }
 
-textarea {
+textarea, input {
   font-family: Roboto,Noto Sans,-apple-system,BlinkMacSystemFont,sans-serif;
   font-size: 100%;
   letter-spacing: .01em;
