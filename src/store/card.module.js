@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { START_ADDING_CARD, SET_NEW_CARD_NAME, CANCEL_ADDING_CARD, CONFIRM_ADDING_CARD, UPDATE_LIFTED_CARD_INFO, UPDATE_MOUSE_POSITION, UPDATE_CARD_PLACEHOLDER_POSITION, RELEASE_CARD, UPDATE_LIFTED_LIST_INFO, UPDATE_LIST_PLACEHOLDER_POSITION, RELEASE_LIST, START_ADDING_LIST, SET_NEW_LIST_NAME, CANCEL_ADDING_LIST } from './mutation-types';
+import { START_ADDING_CARD, SET_NEW_CARD_NAME, CANCEL_ADDING_CARD, CONFIRM_ADDING_CARD, UPDATE_LIFTED_CARD_INFO, UPDATE_MOUSE_POSITION, UPDATE_CARD_PLACEHOLDER_POSITION, RELEASE_CARD, UPDATE_LIFTED_LIST_INFO, UPDATE_LIST_PLACEHOLDER_POSITION, RELEASE_LIST, START_ADDING_LIST, SET_NEW_LIST_NAME, CANCEL_ADDING_LIST, CONFIRM_ADDING_LIST } from './mutation-types';
 import { LIFT_CARD, MOUSE_MOVED, LIFT_LIST } from './action-types';
 
 let nextListId = 0;
@@ -121,9 +121,22 @@ const mutations = {
   },
 
   [CANCEL_ADDING_LIST] (state) {
+    console.log('test');
+
     state.isAddingList = undefined;
     state.newListName = undefined;
-  }
+  },
+
+  [CONFIRM_ADDING_LIST] (state) {
+    state.lists.push({
+      name: state.newListName,
+      id: nextListId++,
+      cards: [],
+    });
+
+    state.isAddingList = undefined;
+    state.newListName = undefined;
+  },
 };
 
 const calculateNewListPlaceholderPosition = ({ commit, state }, mousePosition) => {

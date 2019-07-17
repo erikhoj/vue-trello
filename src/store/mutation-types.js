@@ -12,3 +12,4 @@ export const UPDATE_LIST_PLACEHOLDER_POSITION = 'updateListPlaceholderPosition';
 export const START_ADDING_LIST = 'startAddingList';
 export const SET_NEW_LIST_NAME = 'setNewListName';
 export const CANCEL_ADDING_LIST = 'cancelAddingList';
+export const CONFIRM_ADDING_LIST = 'confirmAddingList';

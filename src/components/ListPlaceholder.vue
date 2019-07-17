@@ -25,7 +25,7 @@ export default {
   .list-placeholder {
     margin-left: 4px;
     margin-right: 4px;
-    background-color: #b3b5ba;
+    background-color: rgba(0, 0, 0, 0.15);
     border-radius: 3px;
   }
 </style>

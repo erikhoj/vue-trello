@@ -17,7 +17,7 @@
     <div class="new-card-action-parent">
       <button v-on:click="confirmAddingCard" class="new-card-add-button">Add Card</button>
       <div v-on:click="cancelAddingCard">
-        <md-icon v-on:click.capture="cancelAddingCard" class="new-card-cancel-button">clear</md-icon>
+        <md-icon class="new-card-cancel-button">clear</md-icon>
       </div>
 
       <div class="new-card-more-parent">
